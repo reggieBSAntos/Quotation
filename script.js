@@ -276,9 +276,76 @@ const Form = {
   },
 };
 
+const swipedetect = (el, callback) => {
+  let touchsurface = el,
+    swipedir,
+    startX,
+    startY,
+    distX,
+    distY,
+    threshold = 150, //required min distance traveled to be considered swipe
+    restraint = 100, // maximum distance allowed at the same time in perpendicular direction
+    allowedTime = 300, // maximum time allowed to travel that distance
+    elapsedTime,
+    startTime,
+    handleswipe = callback || function (swipedir) {};
+
+  touchsurface.addEventListener(
+    "touchstart",
+    (e) => {
+      let touchobj = e.changedTouches[0];
+      swipedir = "none";
+      distX = 0;
+      startX = touchobj.pageX;
+      startY = touchobj.pageY;
+      startTime = new Date().getTime(); // record time when finger first makes contact with surface
+      e.preventDefault();
+    },
+    false
+  );
+
+  touchsurface.addEventListener(
+    "touchmove",
+    (e) => {
+      e.preventDefault(); // prevent scrolling when inside DIV
+    },
+    false
+  );
+
+  touchsurface.addEventListener(
+    "touchend",
+    (e) => {
+      var touchobj = e.changedTouches[0];
+      distX = touchobj.pageX - startX; // get horizontal dist traveled by finger while in contact with surface
+      distY = touchobj.pageY - startY; // get vertical dist traveled by finger while in contact with surface
+      elapsedTime = new Date().getTime() - startTime; // get time elapsed
+      if (elapsedTime <= allowedTime) {
+        // first condition for awipe met
+        if (Math.abs(distX) >= threshold && Math.abs(distY) <= restraint) {
+          // 2nd condition for horizontal swipe met
+          swipedir = distX < 0 ? "left" : "right"; // if dist traveled is negative, it indicates left swipe
+        } else if (
+          Math.abs(distY) >= threshold &&
+          Math.abs(distX) <= restraint
+        ) {
+          // 2nd condition for vertical swipe met
+          swipedir = distY < 0 ? "up" : "down"; // if dist traveled is negative, it indicates up swipe
+        }
+      }
+      handleswipe(swipedir);
+      e.preventDefault();
+    },
+    false
+  );
+};
+
 const init = () => {
   let curSlide = 0,
     maxSlide = 0;
+
+  const slider = document.querySelector(".slider");
+  const dots = document.querySelector(".dots");
+  const accordion = document.querySelector(".accordion ");
 
   const renderView = () => {
     /**
@@ -464,9 +531,6 @@ const init = () => {
     /**
      * CONS
      */
-    const slider = document.querySelector(".slider");
-    const dots = document.querySelector(".dots");
-    const accordion = document.querySelector(".accordion ");
 
     let slidesFrag = document.createDocumentFragment("");
     let dotsFrag = document.createDocumentFragment("");
@@ -785,27 +849,28 @@ const init = () => {
   /**
    * FUNCTIONS
    */
+  const nextSlide = () => {
+    if (curSlide === maxSlide - 1) curSlide = 0;
+    else curSlide++;
+
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+
+  const prevSlide = () => {
+    if (curSlide === 0) curSlide = maxSlide - 1;
+    else curSlide--;
+
+    goToSlide(curSlide);
+    activateDot(curSlide);
+  };
+
   const goToSlide = (slide) =>
     Array.from(slides).forEach(
       (s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`)
     );
 
   const activateSlider = () => {
-    const nextSlide = () => {
-      if (curSlide === maxSlide - 1) curSlide = 0;
-      else curSlide++;
-
-      goToSlide(curSlide);
-      activateDot(curSlide);
-    };
-
-    const prevSlide = () => {
-      if (curSlide === 0) curSlide = maxSlide - 1;
-      else curSlide--;
-
-      goToSlide(curSlide);
-      activateDot(curSlide);
-    };
     const [btnPrev, btnNext] = document.querySelectorAll(" .slider-button");
 
     btnNext.addEventListener("click", nextSlide);
@@ -876,6 +941,13 @@ const init = () => {
       buttonClick: callbackBadge,
       itemClick: callbackItem,
     });
+  });
+
+  /* SWIPE EVENT */
+  swipedetect(slider, (swipedir) => {
+    //     swipedir contains either "none", "left", "right", "top", or "down"
+    if (swipedir == "left") nextSlide();
+    if (swipedir == "right") prevSlide();
   });
 };
 
