@@ -283,9 +283,9 @@ const swipedetect = (el, callback) => {
     startY,
     distX,
     distY,
-    threshold = 150, //required min distance traveled to be considered swipe
-    restraint = 100, // maximum distance allowed at the same time in perpendicular direction
-    allowedTime = 300, // maximum time allowed to travel that distance
+    threshold = 100, //required min distance traveled to be considered swipe
+    restraint = 150, // maximum distance allowed at the same time in perpendicular direction
+    allowedTime = 500, // maximum time allowed to travel that distance
     elapsedTime,
     startTime,
     handleswipe = callback || function (swipedir) {};
@@ -946,8 +946,8 @@ const init = () => {
   /* SWIPE EVENT */
   swipedetect(slider, (swipedir) => {
     //     swipedir contains either "none", "left", "right", "top", or "down"
-    if (swipedir == "left") prevSlide();
-    if (swipedir == "right") nextSlide();
+    if (swipedir == "left") nextSlide();
+    if (swipedir == "right") prevSlide();
   });
 };
 
