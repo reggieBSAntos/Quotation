@@ -946,8 +946,8 @@ const init = () => {
   /* SWIPE EVENT */
   swipedetect(slider, (swipedir) => {
     //     swipedir contains either "none", "left", "right", "top", or "down"
-    if (swipedir == "left") nextSlide();
-    if (swipedir == "right") prevSlide();
+    if (swipedir == "left") prevSlide();
+    if (swipedir == "right") nextSlide();
   });
 };
 
