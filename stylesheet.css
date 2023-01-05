@@ -644,9 +644,8 @@ button {
     border-radius: 0;
   }
   .slider-button {
-    display: none;
-    /* top: 25%;
-    z-index: 10; */
+    top: 25%;
+    z-index: 10;
   }
   .slide {
     height: 100%;
