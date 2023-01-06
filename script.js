@@ -177,19 +177,21 @@ const Form = {
     const addLabel = (i, j, labels) => {
       return labels
         .map((a, k) => {
-          return `<label for="response-${padString(i)}-${padString(
-            j
-          )}-${padString(k)}" class="radio">
-        <input
-          type="radio"
-          name="question-${padString(i)}-${padString(j)}"
-          id="response-${padString(i)}-${padString(j)}-${padString(k)}"
-          class="radio__input"
-          data-response = "${a}"
-        />
-        <div class="radio__radio"></div>
-        ${responseList[a]}
-      </label>`;
+          return `<div>
+            <label for="response-${padString(i)}-${padString(j)}-${padString(
+            k
+          )}" class="radio">
+              <input
+                type="radio"
+                name="question-${padString(i)}-${padString(j)}"
+                id="response-${padString(i)}-${padString(j)}-${padString(k)}"
+                class="radio__input"
+                data-response = "${a}"
+              />
+              <div class="radio__radio"></div>
+              ${responseList[a]}
+            </label>
+          </div>`;
         })
         .join("");
     };
@@ -345,7 +347,7 @@ const init = () => {
 
   const renderView = () => {
     const slider = document.querySelector(".slider");
-    const dots = document.querySelector(".dots");
+    const dots = document.querySelector(".dots > div");
     const accordion = document.querySelector(".accordion ");
     /**
      * OBJECTS
@@ -469,7 +471,7 @@ const init = () => {
           options
         );
 
-        this.div = document.createElement("div");
+        this.div = document.createElement("a");
         this.div.className = "dots__dot";
         this.div.dataset.service = this.options.index;
 
