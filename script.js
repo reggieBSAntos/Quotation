@@ -341,6 +341,17 @@ const swipedetect = (el, callback) => {
   );
 };
 
+const adjustHeight = () => {
+  let vh = window.innerHeight * 0.01;
+  // console.log(vh);
+  document.documentElement.style.setProperty("--vh", `${vh}px`);
+
+  window.addEventListener("resize", () => {
+    vh = vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  });
+};
+
 const init = () => {
   let curSlide = 0,
     maxSlide = 0;
@@ -952,6 +963,9 @@ const init = () => {
       if (swipedir == "right") prevSlide();
     });
   });
+
+  /* ADJUST HEIGHT */
+  adjustHeight();
 };
 
 document.addEventListener("DOMContentLoaded", () => {
