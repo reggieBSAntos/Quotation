@@ -347,7 +347,8 @@ const adjustHeight = () => {
   document.documentElement.style.setProperty("--vh", `${vh}px`);
 
   window.addEventListener("resize", () => {
-    vh = vh = window.innerHeight * 0.01;
+    vh = window.innerHeight * 0.01;
+    console.log(vh);
     document.documentElement.style.setProperty("--vh", `${vh}px`);
   });
 };
