@@ -167,12 +167,12 @@ button {
   position: absolute;
   top: -9px;
   right: -9px;
-  width: 26px;
-  height: 26px;
-  min-width: 26px;
-  min-height: 26px;
-  max-width: 26px;
-  max-height: 26px;
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  min-height: 22px;
+  max-width: 22px;
+  max-height: 22px;
   background: var(--secondary-light);
   box-shadow: var(--box-shadow);
   color: rgba(255, 255, 255, 0.88);
@@ -182,6 +182,8 @@ button {
   justify-content: center;
   cursor: pointer;
 
+  font-size: 0.8em;
+  text-align: center;
   transition: background 0.25s, transform 0.25s;
 }
 .badge--hidden {
@@ -218,7 +220,8 @@ button {
 }
 .notification__button,
 .form__button {
-  background: var(--secondary-light);
+  width: 100%;
+  background: var(--secondary);
 
   padding: 6px 8px;
   border-radius: 4px;
@@ -241,7 +244,8 @@ button {
   transform: scale(0.99, 0.99);
 }
 .form__button {
-  padding: 12px 8px;
+  width: auto;
+  padding: 10px 16px;
 }
 .bottom-panel {
   width: 100%;
@@ -832,6 +836,9 @@ button {
 .form--close {
   animation-name: form---close;
 }
+.form .content > div:not(:last-of-type) {
+  margin-bottom: 10px;
+}
 
 @keyframes form---close {
   to {
@@ -939,7 +946,9 @@ button {
   transform: scale(1);
 }
 
-@media (max-width: 720px) {
+/* AVERAGE SCREEN HEIGHT OF MOBILE DEVICES - 800*/
+/* FROM 720 */
+@media (max-width: 800px) {
   body {
     height: 100vh;
     background: none;
@@ -1019,5 +1028,8 @@ button {
   }
   .dots {
     bottom: 1%;
+  }
+  .form__button {
+    width: 100%;
   }
 }
