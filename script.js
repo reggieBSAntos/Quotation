@@ -2,6 +2,7 @@
 
 let questions,
   services,
+  responses,
   serviceType,
   serviceList,
   questionType,
@@ -172,63 +173,6 @@ const Form = {
       return;
     }
 
-    const padString = (str) => str.toString().padStart(2, "0");
-
-    const addLabel = (i, j, labels) => {
-      return labels
-        .map((a, k) => {
-          return `<div>
-            <label for="response-${padString(i)}-${padString(j)}-${padString(
-            k
-          )}" class="radio">
-              <input
-                type="radio"
-                name="question-${padString(i)}-${padString(j)}"
-                id="response-${padString(i)}-${padString(j)}-${padString(k)}"
-                class="radio__input"
-                data-response = "${a}"
-              />
-              <div class="radio__radio"></div>
-              ${responseList[a]}
-            </label>
-          </div>`;
-        })
-        .join("");
-    };
-
-    const addLi = (li, i) => {
-      return this.options.object[li]
-        .map((b, j) => {
-          return `  <li class="content">
-            <div class="question">
-            ${questionList[questions[b].question]}
-            </div>
-            <div class="notes">
-              ${questions[b].notes}
-            </div>
-            <div class="response">
-              ${addLabel(i, j, questions[b].responses)}
-            </div>
-          </li>`;
-        })
-        .join("");
-    };
-
-    const addFieldset = () => {
-      return Object.keys(this.options.object)
-        .map((a, i) => {
-          return `<fieldset class="contents">
-        <legend>${
-          a === "generic" ? "" : serviceList[parseInt(a)]
-        } Questions</legend>
-        <ol>
-          ${addLi(a, i)}
-        </ol>
-      </fieldset>`;
-        })
-        .join("");
-    };
-
     const html = `<div class="form">
       <span class="arrow-back"> </span>
       <p class="instructions">
@@ -236,7 +180,7 @@ const Form = {
         adipisicing elit. Deserunt officiis illo dicta voluptates. Nobis
         corrupti laboriosam ad officiis alias soluta!
       </p>
-      ${addFieldset()}
+      ${this._addFieldset()}
       <button class="form__button">Send request</button>
     </div>`;
 
@@ -256,18 +200,108 @@ const Form = {
 
     Array.from(radioInputs).forEach((input) => {
       input.addEventListener("change", ({ target }) => {
+        // EXPLICITLY CHECK IF 'S THE RIGHT PANEL INPUT
+        if (!target.classList.contains("radio__input")) return;
+
         // GET THE CLOSEST 'li' AND 'fieldset' TAGS
         const li = target.closest(".content");
         const fieldset = target.closest(".contents");
 
-        const lis = fieldset.querySelectorAll(".content");
+        // REMOVE ALL ".content.followup" CLASS IN THE FIELDSET
+        Array.from(fieldset.querySelectorAll(".content.followup")).forEach(
+          (r) => r.remove()
+        );
 
-        console.log(fieldset);
-        console.log(Array.from(fieldsets).findIndex((r) => r === fieldset));
+        // GET THE RESPONSE INDEX AND FIND INDEX IN THE RESPONSES
+        // GET THE FOLLOW-UP QUESTIONS
+        const followupQuestion =
+          responses[parseInt(target.dataset.response)].followup;
+
+        // IF FOLLOW LENGHT !== 0  CONTINUE
+        // ADD NEW LI IN CLOSEST FIELDSET
+        if (!followupQuestion.length) return;
+
+        // i = INDEX OF THE TARGET FIELDSET
+        const i = Array.from(fieldsets).findIndex((r) => r === fieldset);
+
+        // j = INDEX OF THE TARGET LI
+        const j = fieldset.querySelectorAll(".content").length;
+
+        li.insertAdjacentHTML(
+          "afterend",
+          this._addLi(i, followupQuestion, j, "followup")
+        );
       });
     });
 
     document.body.appendChild(template.content);
+  },
+
+  _padString(str) {
+    return str.toString().padStart(2, "0");
+  },
+
+  _addLabel(i, j, arr) {
+    return arr
+      .map((a, k) => {
+        return `<div>
+          <label for="response-${this._padString(i)}-${this._padString(
+          j
+        )}-${this._padString(k)}" class="radio">
+            <input
+              type="radio"
+              name="question-${this._padString(i)}-${this._padString(j)}"
+              id="response-${this._padString(i)}-${this._padString(
+          j
+        )}-${this._padString(k)}"
+              class="radio__input"
+              data-response = "${a}"
+            />
+            <div class="radio__radio"></div>
+            ${responseList[a]}
+          </label>
+        </div>`;
+      })
+      .join("");
+  },
+
+  /**
+   * @params
+   * i = current loop/ used as key
+   * arr = the object in current loop/ responses
+   */
+  _addLi(i, arr, j = 0, cl = "") {
+    return arr
+      .map((b) => {
+        j++;
+        return `  <li class="content${cl === "" ? "" : " " + cl}">
+          <div class="question">
+          ${questionList[questions[b].question]}
+          </div>
+          <div class="notes">
+            ${questions[b].notes}
+          </div>
+          <div class="response">
+            ${this._addLabel(i, j, questions[b].responses)}
+          </div>
+        </li>`;
+      })
+      .join("");
+  },
+
+  _addFieldset() {
+    return Object.keys(this.options.object)
+      .map((a, i) => {
+        return `<fieldset class="contents">
+      <legend>${
+        a === "generic" ? "" : serviceList[parseInt(a)]
+      } Questions</legend>
+      <ol>
+        ${this._addLi(i, this.options.object[a])}
+      </ol>
+    </fieldset>`;
+      })
+      .join("");
   },
 
   _close(form) {
@@ -343,7 +377,7 @@ const swipedetect = (el, callback) => {
 
 const adjustHeight = () => {
   let vh = window.innerHeight * 0.01;
-  // console.log(vh);
+
   document.documentElement.style.setProperty("--vh", `${vh}px`);
 
   window.addEventListener("resize", () => {
@@ -969,7 +1003,7 @@ const init = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  ({ questions, services } = obj);
+  ({ questions, services, responses } = obj);
   ({
     serviceType,
     serviceList,
