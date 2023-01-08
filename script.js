@@ -191,8 +191,9 @@ const Form = {
     const [form, back] =
       template.content.querySelectorAll(".form, .arrow-back");
     const fieldsets = template.content.querySelectorAll(".contents");
-
     const radioInputs = template.content.querySelectorAll(".radio__input");
+
+    this._addInputs(fieldsets);
 
     back.addEventListener("click", () => {
       this._close(form);
@@ -260,7 +261,8 @@ const Form = {
             <div class="radio__radio"></div>
             ${responseList[a]}
           </label>
-        </div>`;
+        </div>
+        `;
       })
       .join("");
   },
@@ -302,6 +304,63 @@ const Form = {
     </fieldset>`;
       })
       .join("");
+  },
+
+  _addInputs(els) {
+    els[els.length - 1].querySelector("ol").insertAdjacentHTML(
+      "beforeend",
+      `<li class="content">
+          <div class="question">
+            How soon do you need the final copy of your documents?
+          </div>
+          <div class="response">
+            <div>
+              <label for="dateInput" class="date">
+                <input
+                  type="text"
+                  id="dateInput"
+                  class="date__input"
+                />
+                <div class="date__box">
+                  <span class="date__box__text">23 Jan 2023</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </li>
+        <li class="content">
+          <div class="question">
+            Please enter your Given and Family names?
+          </div>
+          <div class="response">
+            <div>
+              <label for="nameInput" class="name">
+                <input
+                  type="text"
+                  id="nameInput"
+                  class="name__input"
+                />
+              </label>
+            </div>
+          </div>
+        </li>
+        <li class="content">
+          <div class="question">
+            Please enter your email address?
+          </div>
+          <div class="response">
+            <div>
+              <label for="emailInput" class="name email">
+                <input
+                  type="text"
+                  id="emailInput"
+                  class="name__input"
+                />
+              </label>
+            </div>
+          </div>
+        </li>`
+    );
   },
 
   _close(form) {
