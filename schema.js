@@ -5,7 +5,7 @@ const obj = {
       serviceType: 0,
       title: "Resume Services",
       short: "",
-      long: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat eveniet deserunt minima possimus perferendis ipsam ducimus. Ullam quia nobis fugit culpa qui, odit, perspiciatis totam sint obcaecati accusamus, quis quae ab omnis atque saepe architecto ducimus ea voluptas impedit nisi. Suscipit minima voluptates ipsum iste mollitia eum quisquam consequatur voluptas?",
+      long: "",
       notes: "",
       services: [3, 4, 5, 6, 7],
       questions: [0, 5, 6, 7, 8, 9, 10],
@@ -188,11 +188,11 @@ const obj = {
     },
     {
       reponses: 3,
-      followup: [5, 6, 7, 8],
+      followup: [2],
     },
     {
       reponses: 4,
-      followup: [9, 10, 11, 12, 13],
+      followup: [3],
     },
     {
       reponses: 5,
@@ -263,7 +263,6 @@ const obj = {
       followup: [],
     },
   ],
-
   indices: {
     serviceType: ["Resume", "Other", "Addon"],
     serviceList: [
