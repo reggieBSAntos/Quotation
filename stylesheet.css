@@ -15,7 +15,9 @@
 
   --color-black: #2b2928;
 
-  --color-error: #e60000;
+  --red: #d32f2f;
+  --red-light: #ff6659;
+  --red-dark: #9a0007;
 
   --padding-thick: 15px;
   --padding-regular: 8px;
@@ -82,8 +84,8 @@ button {
 }
 .top-panel > h1 {
   flex-grow: 1;
-  font-size: 1.75em;
-  font-weight: 700;
+  font-size: 1.25em;
+  font-weight: 600;
   color: rgba(0, 0, 0, 0.55);
   /* text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2); */
 }
@@ -439,30 +441,31 @@ button {
 }
 
 /* DATE */
-.date {
+.dateInp {
   position: relative;
   display: inline-flex;
   align-items: top;
   justify-content: center;
+  width: 300px;
   cursor: pointer;
 }
-.date__input {
+.dateInp__input {
   display: none;
 }
-.date__box {
+.dateInp__box {
   position: relative;
+  width: 100%;
   padding: 10px 16px;
 
-  width: 300px;
   border: 1px solid rgba(0, 0, 0, 0.3);
 
   cursor: pointer;
   border-radius: 4px;
 }
-.date__box__text {
+.dateInp__box__text {
   margin-left: 20px;
 }
-.date__box::before {
+.dateInp__box::before {
   position: absolute;
   left: 10px;
   top: 0;
@@ -472,24 +475,23 @@ button {
 
   display: block;
   font-size: 1.15em;
-  color: var(--secondary-light);
+  color: var(--primary);
   transition: color 0.25s;
-}
-.date__input:hover + .date__box::before {
-  color: var(--secondary-dark);
 }
 
 /* DATE */
-.name {
+.nameInp,
+.emailInp {
   position: relative;
   display: inline-flex;
   align-items: top;
   justify-content: center;
+  width: 300px;
   cursor: pointer;
 }
-.name__input {
-  width: 300px;
-
+.nameInp__input,
+.emailInp__input {
+  width: 100%;
   padding: 10px 16px;
   padding-left: 2.25em;
   outline: none;
@@ -498,26 +500,31 @@ button {
   cursor: pointer;
   border-radius: 4px;
 }
-.name__box {
+.nameInp__box,
+.emailInp__box {
   position: relative;
 }
-.name__box__text {
+.nameInp__box__text,
+.emailInp__box__text {
   margin-left: 20px;
 }
-.name::before {
+.nameInp::before,
+.emailInp::before {
   position: absolute;
   left: 10px;
   top: 0;
   transform: translateY(50%);
   font-family: "Material Icons";
-  content: "\e7fd";
 
   display: block;
   font-size: 1.25em;
-  color: var(--secondary-light);
+  color: var(--primary);
   transition: color 0.25s;
 }
-.email::before {
+.nameInp::before {
+  content: "\e7fd";
+}
+.emailInp::before {
   content: "\e0be";
 }
 /* SLIDE */
@@ -847,7 +854,7 @@ button {
   transition: color 0.2s;
 }
 .confirm__close:hover {
-  color: var(--color-error);
+  color: var(--red);
   cursor: pointer;
 }
 .confirm__content {
@@ -1115,7 +1122,9 @@ button {
 }
 @media (max-width: 428px) {
   .form__button,
-  .date__box {
+  .dateInp,
+  .nameInp,
+  .emailInp {
     width: 100%;
   }
 }
