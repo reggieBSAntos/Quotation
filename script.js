@@ -163,7 +163,7 @@ const Form = {
         object: {},
         buttonText: "OK",
         buttonClick: function () {},
-        itemClick: function () {},
+        dateInpClick: function () {},
       },
       options
     );
@@ -187,17 +187,24 @@ const Form = {
     const template = document.createElement("template");
     template.innerHTML = html;
 
-    // BUTTONS
-    const [form, back] =
-      template.content.querySelectorAll(".form, .arrow-back");
     const fieldsets = template.content.querySelectorAll(".contents");
     const radioInputs = template.content.querySelectorAll(".radio__input");
 
     this._addInputs(fieldsets);
 
+    // BUTTONS
+    const [form, back] =
+      template.content.querySelectorAll(".form, .arrow-back");
+
     back.addEventListener("click", () => {
       this._close(form);
     });
+
+    template.content
+      .querySelector("#dateInp")
+      .addEventListener("click", ({ target }) => {
+        this.options.dateInpClick(target.closest("label"));
+      });
 
     Array.from(radioInputs).forEach((input) => {
       input.addEventListener("change", ({ target }) => {
@@ -315,14 +322,14 @@ const Form = {
           </div>
           <div class="response">
             <div>
-              <label for="dateInput" class="date">
+              <label for="dateInp" class="dateInp">
                 <input
                   type="text"
-                  id="dateInput"
-                  class="date__input"
+                  id="dateInp"
+                  class="dateInp__input"
                 />
-                <div class="date__box">
-                  <span class="date__box__text">23 Jan 2023</span>
+                <div class="dateInp__box">
+                  <span class="dateInp__box__text"></span>
                 </div>
               </label>
             </div>
@@ -334,11 +341,11 @@ const Form = {
           </div>
           <div class="response">
             <div>
-              <label for="nameInput" class="name">
+              <label for="nameInp" class="nameInp">
                 <input
                   type="text"
-                  id="nameInput"
-                  class="name__input"
+                  id="nameInp"
+                  class="nameInp__input"
                 />
               </label>
             </div>
@@ -350,11 +357,11 @@ const Form = {
           </div>
           <div class="response">
             <div>
-              <label for="emailInput" class="name email">
+              <label for="emailInp" class="emailInp">
                 <input
                   type="text"
-                  id="emailInput"
-                  class="name__input"
+                  id="emailInp"
+                  class="emailInp__input"
                 />
               </label>
             </div>
@@ -949,8 +956,10 @@ const init = () => {
 
     Form.show({
       object: quotationQuestions,
+      dateInpClick: showCalendar,
     });
   };
+
   /**
    * FUNCTIONS
    */
