@@ -2,13 +2,13 @@ import calendarShow from "./calendar.js";
 import confirm from "./confirm.js";
 import form from "./form.js";
 import holidayList from "./holidays.js";
-import notification from "/notification.js";
+import notification from "./notification.js";
 import {
   init as slider,
   nextSlide,
   prevSlide,
   linkClicked,
-} from "./slider";
+} from "./slider.js";
 import {
   show as spinnerShow,
   remove as spinnerRemove,
